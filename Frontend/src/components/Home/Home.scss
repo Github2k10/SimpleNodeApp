@@ -1,0 +1,51 @@
+.nav-bar{
+  position: fixed;
+  border: 1px solid black;
+  width: 100%;
+  top: 0;
+  left: 0;
+  padding: 20px;
+
+  display: flex;
+  justify-content: space-between;
+
+  .nav-links{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+
+    p{
+      margin-right: 20px;
+      border: 1px solid black;
+    }
+  }
+}
+
+.doc-box{
+  width: 100%;
+  padding-top: 100px;
+  border: 1px solid black;
+
+  .document-add{
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    input{
+      margin-right: 20px;
+    }
+
+    button{
+      padding: 5px 15px;
+    }
+  }
+
+  .doc-list{
+    width: 80%;
+    margin: auto;
+    margin-top: 30px;
+  }
+}
