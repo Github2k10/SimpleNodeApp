@@ -48,7 +48,7 @@ router.post("/add", async function (req, res) {
 });
 
 router.put("/edit", async function (req, res) {
-  const { userid, sessionid, documentid, title, description } = req.body;
+  const { userid, sessionid, documentid, title, description } = req.body.data;
 
   if (!userid || !sessionid || !documentid) {
     return res.status(400).json({
@@ -83,9 +83,21 @@ router.put("/edit", async function (req, res) {
 router.delete("/delete", async function (req, res) {
   const { userid, sessionid, documentid } = req.body;
 
-  if (!userid || !sessionid || !documentid) {
+  if (!userid) {
     return res.status(400).json({
-      message: "User id, document id and session id are required",
+      message: "User id is required",
+    });
+  }
+
+  if (!sessionid) {
+    return res.status(400).json({
+      message: "session id is required",
+    });
+  }
+
+  if (!documentid) {
+    return res.status(400).json({
+      message: "document id si required",
     });
   }
 
@@ -96,8 +108,16 @@ router.delete("/delete", async function (req, res) {
       });
     }
 
+    const user = await userModel.findById(userid);
+    if (!user)
+      res.status(400).json({
+        message: "User not found",
+      });
+
     const document = await documentModel.findByIdAndDelete(documentid);
     if (!document) res.status(404).send("Document not found");
+
+    user.deleteDocument(documentid);
     res.send(document);
   } catch (err) {
     console.log(err);
@@ -108,7 +128,7 @@ router.delete("/delete", async function (req, res) {
   }
 });
 
-router.get("/all", async function (req, res) {
+router.post("/all", async function (req, res) {
   const { userid, sessionid } = req.body;
 
   if (!userid || !sessionid) {

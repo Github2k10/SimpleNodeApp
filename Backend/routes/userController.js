@@ -132,17 +132,19 @@ router.post("/login", async function (req, res) {
     });
 });
 
-router.get("/logout", async function (req, res) {
-  const sessionId = req.body.sessionid;
-  const userId = req.body.userid;
+router.post("/logout", async function (req, res) {
+  const sessionid = req.body.sessionid;
+  const userid = req.body.userid;
 
-  if (!sessionId || !userId)
+  console.log(req.body);
+
+  if (!sessionid || !userid)
     res.status(400).json({
       message: "User Id and Session Id both required",
     });
 
-  if (isLoggedIn(sessionId, userId)) {
-    await sessionModel.findOneAndDelete({ _id: sessionId });
+  if (isLoggedIn(sessionid, userid)) {
+    await sessionModel.findOneAndDelete({ _id: sessionid });
 
     res.status(200).json({
       message: "Loged Out",
